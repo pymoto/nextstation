@@ -53,7 +53,7 @@ function speakStationName(stationName) {
         uttr.text = `まもなく、 ${stationName}です`;
         uttr.lang = "ja-JP";
         uttr.rate = 0.7;
-        uttr.pitch = 0.1;
+        uttr.pitch = 1;
         uttr.volume = 3;
 
         // ブラウザが提供する音声を取得
@@ -79,19 +79,22 @@ function speakStationName(stationName) {
 const form = document.getElementById('form');
 
 function updateStationAndSpeak(stationName) {
-    form.value = stationName;
-    audio.play();
+    if (form.value != stationName) {
+        form.value = stationName;
+        audio.play();
 
-    // 音声が再生されるのを待つ
-    audio.onended = () => {
-        setTimeout(() => {
-            speakStationName(stationName);
-        }, 1000);
-        
-    };
-    // speakStationName(stationName)
-    //     .then(() => console.log('Speech synthesis completed'))
-    //     .catch(error => console.error('Speech synthesis error:', error));
+        // 音声が再生されるのを待つ
+        audio.onended = () => {
+            setTimeout(() => {
+                speakStationName(stationName);
+            }, 1000);
+            
+        };
+        // speakStationName(stationName)
+        //     .then(() => console.log('Speech synthesis completed'))
+        //     .catch(error => console.error('Speech synthesis error:', error));
+
+    }
 }
 
 
