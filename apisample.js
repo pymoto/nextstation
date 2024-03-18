@@ -5,6 +5,7 @@ const distance = document.getElementById('distance');
 const audio = new Audio('tohoku.mp3');
 const btn = document.getElementById("btn");
 // 前駅の名前を格納する変数
+// let previousStation;
 let previousStation;
 let next;
 let prev;
@@ -32,6 +33,7 @@ function speakStationName(stationName, next, prev, previousStation) {
     let nextStation;
     if (!previousStation && next) {
         nextStation = next;
+        console.log('koko')
     }else if(!previousStation && !next) {
         nextStation = prev;
     }else if(previousStation && next && next!=previousStation) {
@@ -48,6 +50,7 @@ function speakStationName(stationName, next, prev, previousStation) {
         isTerminal = true;
     }else {
         nextStation = next;
+        console.log('ahoooo')
     }
 
     let readTextURL = `https://yomi-tan.jp/api/yomi.php?ic=UTF-8&oc=UTF-8&k=h&n=3&t=${stationName}駅,${nextStation}駅`;
@@ -58,10 +61,11 @@ function speakStationName(stationName, next, prev, previousStation) {
             let readText = readArray[0].slice(0,-2);
             let nextStationText = readArray[1].slice(0,-2);
 
+
             if ('speechSynthesis' in window) {
                 const uttr = new SpeechSynthesisUtterance();
                 if (isTerminal) {
-                    uttr.text = `まもなく、 ${readText}、終点です。`
+                    uttr.text = `まもなく、 終点、${readText}です。`
                 }else {
                     uttr.text = `まもなく、 ${readText}です。  ${readText}の次は、${nextStationText}に停まります。`;
                 }
@@ -121,7 +125,7 @@ function successCallback(position) {
             const selectedDistance = document.getElementById('selected_distance');
 
             if (parseInt(data.response.station[0].distance) <= selectedDistance.value) {
-                updateStationAndSpeak(data.response.station[0].name, next, prev);
+                updateStationAndSpeak(data.response.station[0].name, next, prev, previousStation);
             }
         });
 }
