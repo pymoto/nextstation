@@ -1,6 +1,8 @@
 
 // HTMLから要素を取得
+const prevHTML = document.getElementById('prev');
 const nearest = document.getElementById('nearest');
+const nextHTML = document.getElementById('next');
 const distance = document.getElementById('distance');
 const audio = new Audio('tohoku.mp3');
 const btn = document.getElementById("btn");
@@ -29,14 +31,13 @@ btn.addEventListener('click', () => {
 
 // 駅名を読み上げる関数
 function speakStationName(stationName, next, prev, previousStation) {
+    let isStart =false;
     let isTerminal = false;
     let nextStation;
-    if (!previousStation && next) {
-        nextStation = next;
-        console.log('koko')
-    }else if(!previousStation && !next) {
-        nextStation = prev;
-    }else if(previousStation && next && next!=previousStation) {
+    if(!previousStation) {
+        isStart = true;
+    }
+    if(previousStation && next && next!=previousStation) {
         nextStation = next;
     }else if (previousStation && next && next==previousStation && prev) {
         nextStation = prev;
@@ -50,7 +51,6 @@ function speakStationName(stationName, next, prev, previousStation) {
         isTerminal = true;
     }else {
         nextStation = next;
-        console.log('ahoooo')
     }
 
     let readTextURL = `https://yomi-tan.jp/api/yomi.php?ic=UTF-8&oc=UTF-8&k=h&n=3&t=${stationName}駅,${nextStation}駅`;
@@ -64,7 +64,9 @@ function speakStationName(stationName, next, prev, previousStation) {
 
             if ('speechSynthesis' in window) {
                 const uttr = new SpeechSynthesisUtterance();
-                if (isTerminal) {
+                if (isStart) {
+                    uttr.text = `まもなく、 ${readText}です。`
+                }else if (isTerminal) {
                     uttr.text = `まもなく、 終点、${readText}です。`
                 }else {
                     uttr.text = `まもなく、 ${readText}です。  ${readText}の次は、${nextStationText}に停まります。`;
@@ -121,7 +123,9 @@ function successCallback(position) {
             nearest.innerHTML = data.response.station[0].name;
             distance.innerHTML = data.response.station[0].distance;
             next = data.response.station[0].next;
+            nextHTML.innerHTML =next;
             prev = data.response.station[0].prev;
+            prevHTML.innerHTML = prev;
             const selectedDistance = document.getElementById('selected_distance');
 
             if (parseInt(data.response.station[0].distance) <= selectedDistance.value) {

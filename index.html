@@ -10,9 +10,17 @@
     <main>
         <div class="container">
             <div class="station-info">
-                <p class="prev station">前駅</p>
-                <p class="now station">次駅<span id="nearest">???</span></p>
-                <p class="next station">次次駅</p>
+                <div class="station sub-stations">
+                    <p class="prev" id="prev">前駅</p>
+                </div>
+
+                <div class="now-wrapper station">
+                    <p class="now" id="nearest">次駅</p>
+                </div>
+                <div class="station sub-stations">
+                    <p class="next" id="next">次次駅</p>
+                </div>
+
             </div>
             <div>
                 <p class="distance-meter">現在地からの距離：<span id="distance">???</span></p>

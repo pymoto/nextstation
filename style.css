@@ -3,7 +3,6 @@
 .container {
     margin: 0 auto;
     text-align: center;
-    max-width: 1000px;
 }
 
 .station-info {
@@ -13,38 +12,39 @@
 }
 
 .station {
-    margin: 0 2vw;
-    width: 30%;
+    
+    margin: 0;
+}
+
+.sub-stations {
+    font-size: min(3vw, 30px);
+    background-color: #E8E8E8;
+    height: 10vw;
+    width: 17%;
     
 }
 
-.prev {
-    font-size: min(3vw, 30px);
-    border: 0.2vw solid ;
-    padding: 5% 5% 10%;
+/* .prev {
 
 
+} */
+
+.now-wrapper {
+    width: 35%;
+    background-color: #FFF5DD;
 }
 
 .now {
     font-size: 5vw;
-    border: 0.2vw solid ;
-    padding: 5% 5% 10%;
+    border-bottom: 2vw solid #52BA00;
 
+    
 }
 
-#nearest {
-    display: block;
-    margin-top: 10vw;
-}
 
-.next {
-    font-size: 3vw;
-    border: 0.2vw solid ;
-    padding: 5% 5% 10%;
+/* .next {
 
-
-}
+} */
 
 .info-wrapper {
     display: flex;
