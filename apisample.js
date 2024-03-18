@@ -20,59 +20,44 @@ btn.addEventListener('click', () => {
     
 });
 
-// function speakStationName(stationName) {
-//         if ('speechSynthesis' in window) {
-
-//             // 発言を設定 (必須)
-//             const uttr = new SpeechSynthesisUtterance()
-        
-//             // テキストを設定 (必須)
-//             uttr.text = `まもなく、 ${stationName}です`
-        
-//             // 言語を設定
-//             uttr.lang = "ja-JP"
-        
-//             // 速度を設定
-//             uttr.rate = 0.7
-        
-//             // 高さを設定
-//             uttr.pitch = 0.1
-        
-//             // 音量を設定
-//             uttr.volume = 1
-        
-//             // 発言を再生 (必須)
-//             window.speechSynthesis.speak(uttr) 
-//         }
-// }
 
 function speakStationName(stationName) {
+    // 読みを取得
+    let readTextURL = `https://yomi-tan.jp/api/yomi.php?ic=UTF-8&oc=UTF-8&k=h&n=3&t=${stationName}駅`
+    fetch(readTextURL)
+        .then(response => response.text())
+        .then(data => {
+            let readArray = data.split(',');
+            let readText = readArray[0].slice(0,-2);
     // ブラウザにWeb Speech API Speech Synthesis機能があるか判定
-    if ('speechSynthesis' in window) {
-        const uttr = new SpeechSynthesisUtterance();
-        uttr.text = `まもなく、 ${stationName}です`;
-        uttr.lang = "ja-JP";
-        uttr.rate = 0.7;
-        uttr.pitch = 1;
-        uttr.volume = 3;
 
-        // ブラウザが提供する音声を取得
-        const voices = window.speechSynthesis.getVoices();
+            if ('speechSynthesis' in window) {
+                const uttr = new SpeechSynthesisUtterance();
+                uttr.text = `まもなく、 ${readText}です`;
+                uttr.lang = "ja-JP";
+                uttr.rate = 0.7;
+                uttr.pitch = 1;
+                uttr.volume = 3;
 
-        // ブラウザの音声が取得できた場合
-        if (voices.length > 0) {
-            // Microsoftの声質を探す
-            const microsoftVoice = voices.find(voice => voice.name === "Microsoft Ichiro - Japanese (Japan)");
+                // ブラウザが提供する音声を取得
+                const voices = window.speechSynthesis.getVoices();
 
-            // Microsoftの声質が見つかった場合
-            if (microsoftVoice) {
-                uttr.voice = microsoftVoice;
+                // ブラウザの音声が取得できた場合
+                if (voices.length > 0) {
+                    // Microsoftの声質を探す
+                    const microsoftVoice = voices.find(voice => voice.name === "Microsoft Ichiro - Japanese (Japan)");
+
+                    // Microsoftの声質が見つかった場合
+                    if (microsoftVoice) {
+                        uttr.voice = microsoftVoice;
+                    }
+                }
+
+                // 発言を再生
+                window.speechSynthesis.speak(uttr);
             }
-        }
+        })
 
-        // 発言を再生
-        window.speechSynthesis.speak(uttr);
-    }
 }
 
 
@@ -81,6 +66,7 @@ const form = document.getElementById('form');
 function updateStationAndSpeak(stationName) {
     if (form.value != stationName) {
         form.value = stationName;
+
         audio.play();
 
         // 音声が再生されるのを待つ
@@ -90,9 +76,6 @@ function updateStationAndSpeak(stationName) {
             }, 1000);
             
         };
-        // speakStationName(stationName)
-        //     .then(() => console.log('Speech synthesis completed'))
-        //     .catch(error => console.error('Speech synthesis error:', error));
 
     }
 }
